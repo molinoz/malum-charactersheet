@@ -1,5 +1,5 @@
 import React from "react";
-import { diceRoller, roll } from 'dnd5e-dice-roller'
+import { roll } from 'dnd5e-dice-roller';
 import { useState } from "react";
 
 function AbilityBox(props) {
@@ -7,7 +7,7 @@ function AbilityBox(props) {
     let aScore = 10 + inc;
 
     function scorePrice(n) {
-        return n<4?n:(4+((n-4)*2))
+        return n<5?n:(4+((n-4)*2))
     };
     function abilityMod(score) {
         return Math.floor((score - 10)/2)
@@ -16,38 +16,34 @@ function AbilityBox(props) {
         return (n<0?"":"+") + n;
     };
     let abilMod = 3
-    function handleclick() {
+    function rollClick() {
         return console.log(roll("d20")+abilMod)
-    }
-    function handleIncChange(e) {
-        setInc(Number(e.target.value));
     }
 
     return (
-      <div>
-        <section>
-            <section>
-                <h1>{props.name}</h1>
+      <>
+        <section className="Box">
+            <section className="outline">
+                <p>{props.name}</p>
             </section>
-            <section>
-                <button onClick={handleclick}>
-                    <h2>{ modSym(abilityMod(aScore)) }</h2>
-                </button>
-            </section>
-            <section>
-                <h1>{aScore}</h1>
+            <button onClick={rollClick} className="outline">
+                <h2>{ modSym(abilityMod(aScore)) }</h2>
+            </button>
+            <section className="outline">
+                <p>{aScore}</p>
             </section>
             <input
+                className="outline"
                 id="increase"
                 type="number"
                 max={6}
                 min={-2}
                 placeholder={inc}
-                onChange={handleIncChange}
+                onChange={e => setInc(parseInt(e.target.value))}
             />
-            <h2>{scorePrice(inc)}</h2>
+            {/* <p>{scorePrice(inc)}</p> */}
         </section>
-      </div>
+      </>
     );
 }
 

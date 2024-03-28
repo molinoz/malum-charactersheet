@@ -1,0 +1,33 @@
+.Board {
+    display: flex;
+    border: 1px solid red;
+    justify-content: center;
+}
+
+.Box {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+.Box p {
+  text-align: center;
+  margin: 5px;
+}
+
+.outline {
+  border: 1px solid black;
+}
+
+.Part {
+  border: 1px solid blue;
+  align-items: center;
+}
+
+.Part h1 {
+  text-align: center;
+}
+
+.Sector {
+  display: grid;
+}
