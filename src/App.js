@@ -10,13 +10,13 @@ export default function App() {
   const [character, setCharacter] = useState({main:{name: "Larry"}, name2: "bob"})
     
     const updateCharacter = (newState) => {
-        setCharacter(newState);
+      setCharacter(newState);
     };
   return (
     <>
       <Navbar character={character}/>
       <MalumCharactersheet character={character} updateCharacter={updateCharacter}/>
-      <FileSet character={character} updateCharacter={updateCharacter}/>
+      <FileSet updateCharacter={updateCharacter}/>
     </>
   );
 }

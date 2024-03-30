@@ -1,29 +1,25 @@
-import React from "react";
-const { app, dialog } = require('@tauri-apps/api');
+import React, { useState } from "react";
+import { Store } from "tauri-plugin-store-api";
 
-export default function FileSet() {
-    const chooseOrCreateDirectory = async () => {
-        const result = await dialog.open({
-          defaultPath: app.getPath('desktop'),
-          properties: ['openDirectory', 'createDirectory'],
-        });
-      
-        if (result.canceled) {
-          console.log('Directory selection canceled');
-          return;
-        }
-      
-        const directoryPath = result.filePaths[0];
-        console.log('Selected directory:', directoryPath);
+import FileModal from "./FileModal";
+
+export default function FileSet({updateCharacter}) {
+    const [openModal, setopenModal] = useState(true);
+
+    const store = new Store("store.json");
+
+    const saveChar = async () => {
+        // in the defaultDir, save the character writing over the json file
     };
+
     return (
         <>
-        <section>
-            <button>Save</button>
-            <button>Export</button>
-            <button>New</button>
-            <button>Load</button>
-        </section>
+            <section>
+                <button>Save</button>
+                <button>New</button>
+                <button>Load</button>
+            </section>
+            <FileModal active={openModal} store={store}/>
         </>
     )
 }

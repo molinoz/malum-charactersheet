@@ -20,10 +20,17 @@
         "save": true
       },
       "fs": {
-        "writeFile": true,
-        "removeFile": true,
+        "all": true,
         "readFile": true,
-        "scope": ["$DOCUMENT/*", "$DESKTOP/*"]
+        "writeFile": true,
+        "readDir": true,
+        "copyFile": true,
+        "createDir": true,
+        "removeDir": true,
+        "removeFile": true,
+        "renameFile": true,
+        "exists": true,
+        "scope": ["$DOCUMENT/*", "$DESKTOP/**", "$DESKTOP/*", "$DESKTOP"]
       },
       "path": {
         "all": true

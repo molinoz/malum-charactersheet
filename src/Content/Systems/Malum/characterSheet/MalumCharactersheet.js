@@ -1,6 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
+import { malum } from "../malum";
+
 import MalumInfo from "./pages/MalumInfo";
 import MalumAttributes from "./pages/MalumAttributes";
 import MalumTurnPlanner from "./pages/MalumTurnPlanner";
@@ -9,6 +11,7 @@ import MalumInventory from "./pages/MalumInventory";
 import MalumSpellList from "./pages/MalumSpellList";
 
 export default function MalumCharactersheet({character, updateCharacter}) {
+    
     return (
         <>
             <Routes>
