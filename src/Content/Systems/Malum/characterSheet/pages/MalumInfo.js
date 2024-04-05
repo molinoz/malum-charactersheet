@@ -9,7 +9,7 @@ export default function MalumInfo({character, updateCharacter}) {
         <>
             <header>
                 <h1>Info</h1>
-                <input type="text" value={character.main.name} onChange={handleChange} />
+                <input type="text" value={character.info.fullName} onChange={handleChange} />
             </header>
             <section>
                 <img />

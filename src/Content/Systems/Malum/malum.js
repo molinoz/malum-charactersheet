@@ -234,10 +234,11 @@ export const malum = {
 			}
 		}
 	},
-	create: {
+	make: {
 		character:(name) => {
-			this[name] = {
+			 return {
 				info: {
+					file: name,
 					img: "",
 					fullName: "",
 					creator: "",
@@ -422,7 +423,6 @@ export const malum = {
 					},
 				},
 			}
-			return {name: name,}
 		},
 		origin: (name) => {
 			this[name] = {

@@ -37,9 +37,9 @@ export default function SelectDefaultDir({store}) {
     };
 
     return (
-        <>
-            <button onClick={selectDirectory}>Set Default Directory</button>
-            <p>{defaultDir}</p>
-        </>
+        <div>
+          <button onClick={selectDirectory}>Set Default Directory</button>
+          <p>{defaultDir}</p>
+        </div>
     );
 }

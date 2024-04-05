@@ -11,7 +11,7 @@ import MalumInventory from "./pages/MalumInventory";
 import MalumSpellList from "./pages/MalumSpellList";
 
 export default function MalumCharactersheet({character, updateCharacter}) {
-    
+
     return (
         <>
             <Routes>

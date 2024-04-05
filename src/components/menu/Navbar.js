@@ -6,7 +6,7 @@ export default function Navbar({character}) {
         <div>
             <button>Ham</button>
             <nav>
-                <h3>{character.main.name}</h3>
+                <h3>{character.info.file}</h3>
                 <ul>
                     <li><Link to="/info">Info</Link></li>
                     <li><Link to="/attributes">Attributes</Link></li>
