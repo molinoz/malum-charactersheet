@@ -24,7 +24,23 @@ export const pow = {
 		list: (container, prop) => {},
 	},
 	props: {
-		sum: () => {},
+		sum: (stats) => {
+			let total = 0;
+			Object.values(stats).forEach((stat) => {
+				//console.log('Value is',stat.incCost)
+				total += stat.incCost;
+				//console.log('Total is',total)
+			});
+			
+			return total;
+		},
 		count: () => {},
+	},
+	check: (val) => {
+		if(val === undefined || val === null) {
+			return "none";
+		} else {
+			return val;
+		};
 	},
 }

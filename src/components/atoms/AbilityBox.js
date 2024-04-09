@@ -1,14 +1,12 @@
 import React from "react";
 import { roll } from 'dnd5e-dice-roller';
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { malum } from "../../Content/Systems/Malum/malum";
 
-function AbilityBox(props) {
-    const [inc, setInc] = useState(0)
+function AbilityBox({character ,updateCharacter, ...props}) {
+    const [inc, setInc] = useState(props.inc)
     let aScore = 10 + inc;
 
-    function scorePrice(n) {
-        return n<5?n:(4+((n-4)*2))
-    };
     function abilityMod(score) {
         return Math.floor((score - 10)/2)
     };
@@ -19,6 +17,9 @@ function AbilityBox(props) {
     function rollClick() {
         return console.log(roll("d20")+abilMod)
     }
+    useEffect(() => {
+        malum.update.attri.stats.incCost(character, updateCharacter, malum.get.stats.incCost(inc), props.name)
+    },[inc])
 
     return (
       <>
@@ -38,10 +39,14 @@ function AbilityBox(props) {
                 type="number"
                 max={6}
                 min={-2}
-                placeholder={inc}
-                onChange={e => setInc(parseInt(e.target.value))}
+                value={inc}
+                onChange={(event) => {
+                    setInc(parseInt(event.target.value));
+                    malum.update.attri.stats.inc(character, updateCharacter, event, props.name);
+                    //console.log("cost is:", malum.get.stats.incCost(event.target.value))
+                }}
             />
-            {/* <p>{scorePrice(inc)}</p> */}
+            <p>{character.attri.stats[props.name].incCost}</p>
         </section>
       </>
     );

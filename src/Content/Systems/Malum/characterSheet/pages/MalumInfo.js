@@ -1,34 +1,31 @@
 import React from "react";
-import malum from "../../malum";
+import { malum } from "../../malum";
 
 export default function MalumInfo({character, updateCharacter}) {
-    const handleChange = (event) => {
-        updateCharacter({...character, main: {...character.main, name: event.target.value}});
-    };
     return (
         <>
             <header>
                 <h1>Info</h1>
-                <input type="text" value={character.info.fullName} onChange={handleChange} />
+                <input type="text" value={character.info.file} onChange={(event) => {malum.update.info.file(character, updateCharacter, event);}} />
             </header>
             <section>
                 <img />
                 <section>
-                    <names></names>
+                    <div className="names"></div>
                     <section>
-                        <infoblock></infoblock>
-                        <infoblock></infoblock>
+                        <div className="infoblocks"></div>
+                        <div className="infoblocks"></div>
                     </section>
                 </section>
             </section>
             <section>
-                <infoblock></infoblock>
-                <infoblock></infoblock>
-                <infoblock></infoblock>
+                <div className="infoblocks"></div>
+                <div className="infoblocks"></div>
+                <div className="infoblocks"></div>
             </section>
             <section>
-                <infoblock></infoblock>
-                <infoblock></infoblock>
+                <div className="infoblocks"></div>
+                <div className="infoblocks"></div>
             </section>
         </>
     )

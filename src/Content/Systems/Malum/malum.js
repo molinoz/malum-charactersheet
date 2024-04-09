@@ -22,24 +22,91 @@ export const malum = {
 		values: (container, prop) => {},
 		list: (container, prop) => {},
 	},
-	props: {
-		sum: () => {},
-		count: () => {},
+	update: {
+		info: {
+			file: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, file: event.target.value}});
+			},
+			img: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, img: event.target.value}});
+			},
+			fullName: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, fullName: event.target.value}});
+			},
+			creator: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, creator: event.target.value}});
+			},
+			origin: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, choices:{...character.info.choices, origin: event.target.value}}});
+			},
+			history: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, choices:{...character.info.choices, history: event.target.value}}});
+			},
+			sign: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, choices:{...character.info.choices, sign: event.target.value}}});
+			},
+			card: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, choices:{...character.info.choices, card: event.target.value}}});
+			},
+			playerArchetype: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, choices:{...character.info.choices, playerArchetype: event.target.value}}});
+			},
+			classLvl: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, choices:{...character.info.choices, classLvl: event.target.value}}});
+			},
+			age: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, description:{...character.info.description, age: event.target.value}}});
+			},
+			height: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, description:{...character.info.description, height: event.target.value}}});
+			},
+			weight: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, description:{...character.info.description, weight: event.target.value}}});
+			},
+			organizations: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, relations:{...character.info.relations, organizations: event.target.value}}});
+			},
+			allies: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, relations:{...character.info.relations, allies: event.target.value}}});
+			},
+			enemies: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, relations:{...character.info.relations, enemies: event.target.value}}});
+			},
+			note: (character, updateCharacter, event) => {
+				updateCharacter({...character, info: {...character.info, note: event.target.value}});
+			},
+		},
+		attri:{
+			stats:{
+				inc: (character, updateCharacter, event, stat) => {
+					//console.log('event value received:',parseInt(event.target.value))
+					updateCharacter({...character, attri: {...character.attri, stats:{...character.attri.stats, [stat]: {...character.attri.stats[stat], inc: parseInt(event.target.value)}}}});
+					//console.log('inc is:', character.attri.stats[stat].inc)
+				},
+				incCost: (character, updateCharacter, value, stat) => {
+					updateCharacter({...character, attri: {...character.attri, stats:{...character.attri.stats, [stat]: {...character.attri.stats[stat], incCost: value}}}});
+				}
+			},
+		},
 	},
-	update: () => {},
+	remove: {
+		organizations: (event) => {},
+		allies: (event) => {},
+		enemies: (event) => {},
+	},
 	use: {
 		stat: {
-			mod: (name, stat) => {
-				return this[name].attri.stats[stat].mod
+			mod: (character, stat) => {
+				return character.attri.stats[stat].mod
 			},
-			full:  (name, stat) => {
-				return this[name].attri.stats[stat].full
+			full:  (character, stat) => {
+				return character.attri.stats[stat].full
 			},
-			short:  (name, stat) => {
-				return this[name].attri.stats[stat].short
+			short:  (character, stat) => {
+				return character.attri.stats[stat].short
 			},
-			score:  (name, stat) => {
-				return this[name].attri.stats[stat].score
+			score:  (character, stat) => {
+				return character.attri.stats[stat].score
 			},
 		},
 		training: {
@@ -101,136 +168,136 @@ export const malum = {
 	},
 	get: {
 		stats: {
-			ASI: (name) => {
-				let base = this[name].attri.baseASI;
-				let spent = this[name].attri.stats;
+			ASI: (character) => {
+				let base = character.attri.baseASI;
+				let spent = character.attri.stats;
 				let gained = 0;
 				return base + gained - spent;
 			},
-			score: (name,stat) => {
-				let inc = this[name].attri.stats[stat].inc;
-				let base = this[name].attri.stats[stat].baseScore;
+			score: (character,stat) => {
+				let inc = character.attri.stats[stat].inc;
+				let base = character.attri.stats[stat].baseScore;
 				return base + inc;
 			},
-			inCost: (name,stat) => {
-				let inc = this[name].attri.stats[stat].inc
+			incCost: (inc) => {
+				inc = parseInt(inc)
 				return inc<5?inc:(((inc-4)*2)+4);
 			},
-			baseMod: (name,stat) => {
-				let score = this[name].attri.stats[stat].score;
+			baseMod: (character,stat) => {
+				let score = character.attri.stats[stat].score;
 				return Math.floor( (score - 10) / 2 );
 			},
-			mod: (name,stat) => {
-				let base = this[name].attri.stats[stat].baseMod;
-				let misc = this[name].attri.stats[stat].miscMod;
+			mod: (character,stat) => {
+				let base = character.attri.stats[stat].baseMod;
+				let misc = character.attri.stats[stat].miscMod;
 				return base + pow.props.sum(misc);
 			},
-			roll: (name,stat) => {
-				let mod = this[name].attri.stats[stat].mod;
+			roll: (character,stat) => {
+				let mod = character.attri.stats[stat].mod;
 				return test.roll.d20(mod);
 			}
 		},
 		skills: {
-			SPI: (name) => {},
-			baseMod: (name,skill) => {
-				return this[name].attri.stats[skill].totalMod
+			SPI: (character) => {},
+			baseMod: (character,skill) => {
+				return character.attri.stats[skill].totalMod
 			},
-			trainingMod: (name, skill) => {
-				let training = this[name].attri.stats[skill].training;
+			trainingMod: (character, skill) => {
+				let training = character.attri.stats[skill].training;
 				return test.use.training.mod(training);
 			},
-			trainingFull: (name, skill) => {
-				let training = this[name].attri.stats[skill].training;
+			trainingFull: (character, skill) => {
+				let training = character.attri.stats[skill].training;
 				return test.use.training.full(training);
 			},
-			trainingCost: (name, skill) => {
-				let training = this[name].attri.stats[skill].training;
+			trainingCost: (character, skill) => {
+				let training = character.attri.stats[skill].training;
 				return test.use.training.cost(training);
 			},
-			mod: (name,skill) => {},
-			roll: (name,skill) => {},
+			mod: (character,skill) => {},
+			roll: (character,skill) => {},
 		},
 		resources: {
 			turn: {
-				actions: (name) => {
+				actions: (character) => {
 					let turnEco = 3;
 					let roundSpent = 0;
 				},
-				fullActions: (name) => {
-					let actions = this[name].turn.actions;
+				fullActions: (character) => {
+					let actions = character.turn.actions;
 					return Math.floor(actions);
 				},
-				halfActions: (name) => {
-					let actions = this[name].turn.actions;
-					let fullActions = this[name].turn.fullActions;
+				halfActions: (character) => {
+					let actions = character.turn.actions;
+					let fullActions = character.turn.fullActions;
 					return Math.ceil(actions - fullActions);
 				},
 			},
 			health: {
-				current: (name) => {},
-				max: (name) => {
+				current: (character) => {},
+				max: (character) => {
 					let baseHP = 0;
 					let classHP = 0;
 					return baseHP + classHP;
 				},
-				fieldMax: (name) => {
-					let max = this[name].resources.health.max;
-					let reduction = this[name].resources.health.wounds;
+				fieldMax: (character) => {
+					let max = character.resources.health.max;
+					let reduction = character.resources.health.wounds;
 					return max - reduction;
 				},
-				proc: (name) => {
-					let max = this[name].resources.health.max;
+				proc: (character) => {
+					let max = character.resources.health.max;
 					return Math.floor(max/4)
 				},
-				wounds: (name) => {
+				wounds: (character) => {
 					let dmg = 0;
 					return Math.floor(dmg/2)
 				},
-				lgtWounds: (name) => {
-					let wounds = this[name].resources.health.wounds;
+				lgtWounds: (character) => {
+					let wounds = character.resources.health.wounds;
 					return Math.ceil(wounds/2)
 				},
-				dpWounds: (name) => {
-					let wounds = this[name].resources.health.wounds;
+				dpWounds: (character) => {
+					let wounds = character.resources.health.wounds;
 					return Math.floor(wounds/2)
 				},
 			},
 			defense: {
-				base: (name) => {},
-				deflect: (name) => {
-					let items = this[name].inventory.containers.equipped.items
+				base: (character) => {},
+				deflect: (character) => {
+					let items = character.inventory.containers.equipped.items
 					let armor = test.find.values(items, 'armor');
 					return test.props.sum(armor)
 				},
 				absorbtion: {
-					min: (name) => {},
-					max: (name) => {},
+					min: (character) => {},
+					max: (character) => {},
 				},
 				toughness: {
-					min: (name) => {},
-					max: (name) => {},
+					min: (character) => {},
+					max: (character) => {},
 				},
-				dr: (name) => {},
-				total: (name) => {},
-				protection: (name) => {},
+				dr: (character) => {},
+				total: (character) => {},
+				protection: (character) => {},
 			},
-			morale: (name) => {},
+			morale: (character) => {},
 			magic: {
 				mana: {
-					current: (name) => {},
-					max: (name) => {},
-					regen: (name) => {},
-					charred: (name) => {},
+					current: (character) => {},
+					max: (character) => {},
+					regen: (character) => {},
+					charred: (character) => {},
 				},
-				slots: (name) => {},
+				slots: (character) => {},
 			}
 		},
 		inventory: {
 			weight: {
-				current: (name) => {},
-				capacity: (name) => {},
-				encumberance: (name) => {},
-				moveObject: (name) => {},
+				current: (character) => {},
+				capacity: (character) => {},
+				encumberance: (character) => {},
+				moveObject: (character) => {},
 			}
 		}
 	},
@@ -260,6 +327,7 @@ export const malum = {
 						allies: [],
 						enemies: [],
 					},
+					note: '',
 				},
 				attri: {
 					baseASI: 8,
@@ -267,9 +335,9 @@ export const malum = {
 					baseSPI: 0,
 					SPI: 0,
 					stats: {
-						ATK: {
-							full: "Attack",
-							short: "ATK",
+						STR: {
+							full: "Strength",
+							short: "STR",
 							inc: 0,
 							incCost: 0,
 							baseScore: 10,
@@ -278,9 +346,53 @@ export const malum = {
 							miscMod: {},
 							totalMod: 0,
 						},
-						DEF: {
-							full: "Defense",
-							short: "DEF",
+						AGI: {
+							full: "Agility",
+							short: "AGI",
+							inc: 0,
+							incCost: 0,
+							baseScore: 10,
+							score: 10,
+							mod: 0,
+							miscMod: {},
+							totalMod: 0,
+						},
+						CON: {
+							full: "Constitution",
+							short: "CON",
+							inc: 0,
+							incCost: 0,
+							baseScore: 10,
+							score: 10,
+							mod: 0,
+							miscMod: {},
+							totalMod: 0,
+						},
+						INT: {
+							full: "Intelligence",
+							short: "INT",
+							inc: 0,
+							incCost: 0,
+							baseScore: 10,
+							score: 10,
+							mod: 0,
+							miscMod: {},
+							totalMod: 0,
+						},
+						WIS: {
+							full: "Wisdom",
+							short: "WIS",
+							inc: 0,
+							incCost: 0,
+							baseScore: 10,
+							score: 10,
+							mod: 0,
+							miscMod: {},
+							totalMod: 0,
+						},
+						WIL: {
+							full: "Willpower",
+							short: "WIL",
 							inc: 0,
 							incCost: 0,
 							baseScore: 10,
@@ -291,29 +403,429 @@ export const malum = {
 						},
 					},
 					skills: {
-						hit: {
-							skillname: "Hit",
-							category: 'Offense',
-							description: "",
-							baseMod: 0,
-							training: "U",
-							trainingFull: "",
-							trainingMod: 0,
-							trainingCost: 0,
-							miscMod: {},
-							totalMod: 0,
+						combat: {
+							axes: {
+								skillName: "Axes",
+								category: 'Combat',
+								description: "",
+								baseMod: "AGI",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							blades: {
+								skillName: "Blades",
+								category: 'Combat',
+								description: "",
+								baseMod: "AGI",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							blunts: {
+								skillName: "Blunts",
+								category: 'Combat',
+								description: "",
+								baseMod: "AGI",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							bows: {
+								skillName: "Bows",
+								category: 'Combat',
+								description: "",
+								baseMod: "AGI",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							heavies: {
+								skillName: "Heavies",
+								category: 'Combat',
+								description: "",
+								baseMod: "AGI",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							pistols: {
+								skillName: "Pistols",
+								category: 'Combat',
+								description: "",
+								baseMod: "AGI",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							rifles: {
+								skillName: "Rifles",
+								category: 'Combat',
+								description: "",
+								baseMod: "AGI",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							shotguns: {
+								skillName: "Shotguns",
+								category: 'Combat',
+								description: "",
+								baseMod: "AGI",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							spears: {
+								skillName: "Spears",
+								category: 'Combat',
+								description: "",
+								baseMod: "AGI",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							unarmed: {
+								skillName: "Unarmed",
+								category: 'Combat',
+								description: "",
+								baseMod: "AGI",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
 						},
-						defense: {
-							skillname: "Skill",
-							category: 'Defense',
-							description: "",
-							baseMod: 0,
-							training: "U",
-							trainingFull: "",
-							trainingMod: 0,
-							trainingCost: 0,
-							miscMod: {},
-							totalMod: 0,
+						utility: {
+							athletics: {
+								skillName: "Athletics",
+								category: 'Utility',
+								description: "",
+								baseMod: "STR",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							dexterity: {
+								skillName: "Dexterity",
+								category: 'Utility',
+								description: "",
+								baseMod: "AGI",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							nimble: {
+								skillName: "Nimble",
+								category: 'Utility',
+								description: "",
+								baseMod: "AGI",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							stealth: {
+								skillName: "Stealth",
+								category: 'Utility',
+								description: "",
+								baseMod: "AGI",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							endurance: {
+								skillName: "Endurance",
+								category: 'Utility',
+								description: "",
+								baseMod: "CON",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							immunity: {
+								skillName: "Immunity",
+								category: 'Utility',
+								description: "",
+								baseMod: "CON",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							arcana: {
+								skillName: "Arcana",
+								category: 'Utility',
+								description: "",
+								baseMod: "INT",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							chemistry: {
+								skillName: "Chemistry",
+								category: 'Utility',
+								description: "",
+								baseMod: "INT",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							computers: {
+								skillName: "Computers",
+								category: 'Utility',
+								description: "",
+								baseMod: "INT",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							engineering: {
+								skillName: "Engineering",
+								category: 'Utility',
+								description: "",
+								baseMod: "INT",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							knowledge: {
+								skillName: "Knowledge",
+								category: 'Utility',
+								description: "",
+								baseMod: "INT",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							spellcraft: {
+								skillName: "Spellcraft",
+								category: 'Utility',
+								description: "",
+								baseMod: "INT",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							theology: {
+								skillName: "Theology",
+								category: 'Utility',
+								description: "",
+								baseMod: "INT",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							awareness: {
+								skillName: "Awareness",
+								category: 'Utility',
+								description: "",
+								baseMod: "WIS",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							cooking: {
+								skillName: "Cooking",
+								category: 'Utility',
+								description: "",
+								baseMod: "WIS",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							crafting: {
+								skillName: "Crafting",
+								category: 'Utility',
+								description: "",
+								baseMod: "WIS",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							fabrication: {
+								skillName: "Fabrication",
+								category: 'Utility',
+								description: "",
+								baseMod: "WIS",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							medical: {
+								skillName: "Medical",
+								category: 'Utility',
+								description: "",
+								baseMod: "WIS",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							metalworking: {
+								skillName: "Metalworking",
+								category: 'Utility',
+								description: "",
+								baseMod: "WIS",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							survival: {
+								skillName: "Survival",
+								category: 'Utility',
+								description: "",
+								baseMod: "WIS",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							charisma: {
+								skillName: "Charisma",
+								category: 'Utility',
+								description: "",
+								baseMod: "WIL",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							deception: {
+								skillName: "Deception",
+								category: 'Utility',
+								description: "",
+								baseMod: "WIL",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							empathy: {
+								skillName: "Empathy",
+								category: 'Utility',
+								description: "",
+								baseMod: "WIL",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							intimidation: {
+								skillName: "Intimidation",
+								category: 'Utility',
+								description: "",
+								baseMod: "WIL",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
+							morale: {
+								skillName: "Morale",
+								category: 'Utility',
+								description: "",
+								baseMod: "WIL",
+								training: "U",
+								trainingFull: "",
+								trainingMod: 0,
+								trainingCost: 0,
+								miscMod: {},
+								totalMod: 0,
+							},
 						},
 					},
 				},
@@ -368,12 +880,12 @@ export const malum = {
 					},
 					containers: {
 						equiped: {
-							name: "Equiped",
+							character: "Equiped",
 							weight: 0,
 							items: [],
 						},
 						bag: {
-							name: "Bag",
+							character: "Bag",
 							weight: 0,
 							capacity: 15,
 							items: [],
@@ -384,7 +896,7 @@ export const malum = {
 				feats: {
 					background: {
 						origin: {
-							name: "",
+							character: "",
 							resist: "",
 							statBonus: {
 								ATK: 1,
@@ -396,7 +908,7 @@ export const malum = {
 							trait: {},
 						},
 						sign: {
-							name: "",
+							character: "",
 							element: "",
 							suit: "",
 							horseman: "",
@@ -405,7 +917,7 @@ export const malum = {
 					},
 					additional: {},
 					archetype: {
-						name: "",
+						character: "",
 						hpBonus: 0,
 						baseSkills: "",
 						LVL1: {},
@@ -424,9 +936,9 @@ export const malum = {
 				},
 			}
 		},
-		origin: (name) => {
-			this[name] = {
-				name: name,
+		origin: (character) => {
+			character = {
+				character: character,
 				resist: "",
 				statBonus: {
 					ATK: 1,
@@ -438,16 +950,16 @@ export const malum = {
 				trait: {},
 			}
 		},
-		history: (name) => {
-			this[name] = {
-				name: name,
+		history: (character) => {
+			character = {
+				character: character,
 				baseSkills: [],
 				trait: {},
 			}
 		},
-		archetype: (name) => {
-			this[name] = {
-				name: "",
+		archetype: (character) => {
+			character = {
+				character: "",
 				hpBonus: 0,
 				baseSkills: "",
 				LVL1: {},
@@ -461,16 +973,16 @@ export const malum = {
 				LVL9: {},
 			}
 		},
-		subtype: (name) => {
-			this[name] = {
+		subtype: (character) => {
+			character = {
 				LVL1: {},
 			}
 		},
-		item: (name) => {
-			this[name] = {}
+		item: (character) => {
+			character = {}
 		},
-		additional: (name) => {
-			this[name] = {}
+		additional: (character) => {
+			character = {}
 		},
 	}
 }

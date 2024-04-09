@@ -3,7 +3,7 @@ import { createDir, readDir, writeFile, readTextFile } from '@tauri-apps/api/fs'
 
 import { malum } from "../../../Content/Systems/Malum/malum";
 
-export default function CreateCharDir({store, updateCharacter, updateCharDir}) {
+export default function CreateCharDir({mode, store, updateCharacter, updateCharDir}) {
     const [CharDir, SetCharDir] = useState('');
     const [name, setName] = useState('');
     useEffect(() => {
@@ -19,7 +19,7 @@ export default function CreateCharDir({store, updateCharacter, updateCharDir}) {
         };
         fetchCharDir();
       }, []);
-      async function readJsonFile(path) {
+    async function readJsonFile(path) {
         try {
             const file = await readTextFile(path);
             return JSON.parse(file);
@@ -53,6 +53,7 @@ export default function CreateCharDir({store, updateCharacter, updateCharDir}) {
                     await store.set('charDir', selected)
                     console.log('charDir saved successfully');
                     getData(path);
+                    setName('');
                 } catch (error) {
                     console.error('Error saving charDir:', error);
                 };
@@ -63,6 +64,7 @@ export default function CreateCharDir({store, updateCharacter, updateCharDir}) {
           console.error('Error retrieving defaultDir:', error);
         }
     };
+    if(mode === 0) return null;
     return (
         <>
             <input

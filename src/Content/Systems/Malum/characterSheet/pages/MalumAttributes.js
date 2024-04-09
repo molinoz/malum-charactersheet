@@ -11,7 +11,7 @@ export default function MalumAttributes({character, updateCharacter}) {
             <header>
                 <h1>Attributes</h1>
             </header>
-            <PointBuyAbilityBoard />
+            <PointBuyAbilityBoard character={character} updateCharacter={updateCharacter}/>
         </>
     )
 }

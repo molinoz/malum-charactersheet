@@ -1,11 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import AbilityBox from "../atoms/AbilityBox";
-import '../Styles/mystyle.css'
+import '../Styles/mystyle.css';
+import { pow } from "../baseSystem/pow";
 
-export default function PointBuyAbilityBoard(props) {
+export default function PointBuyAbilityBoard({character, updateCharacter}) {
     const [ASI, setASI] = useState(0)
-    let ASP = 8 + ASI;
+    let ASP = 8 + ASI - pow.props.sum(character.attri.stats);
 
     return(
         <div>
@@ -13,10 +14,9 @@ export default function PointBuyAbilityBoard(props) {
                 <section className="Part">
                     <h1>Main Abilities</h1>
                     <section className="Board outline">
-                        <AbilityBox name="ATK"/>
-                        <AbilityBox name="SPL"/>
-                        <AbilityBox name="DEF"/>
-                        <AbilityBox name="FRI"/>
+                        {Object.values(character.attri.stats).map((stat, index) => (
+                            <AbilityBox key={index} name={stat.short} baseScore={stat.baseScore} inc={stat.inc} updateCharacter={updateCharacter} character={character}/>
+                        ))}
                     </section>
                 </section>
                 <section className="Part">

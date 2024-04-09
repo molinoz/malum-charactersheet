@@ -7,18 +7,18 @@ import FileSet from './components/menu/FileSet';
 import MalumCharactersheet from './Content/Systems/Malum/characterSheet/MalumCharactersheet';
 
 export default function App() {
-  const [character, setCharacter] = useState({info:{file: "None"}, name2: "bob"})
+  const [character, setCharacter] = useState(undefined);
     const updateCharacter = (newState) => {
       setCharacter(newState);
     };
     useEffect(() => {
-      console.log("character updated is: ", character)
+      console.log("character updated: ", character)
     }, [character]);
   return (
     <>
       <Navbar character={character}/>
       <MalumCharactersheet character={character} updateCharacter={updateCharacter}/>
-      <FileSet updateCharacter={updateCharacter}/>
+      <FileSet character={character} updateCharacter={updateCharacter}/>
     </>
   );
 }

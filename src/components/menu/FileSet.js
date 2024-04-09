@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Store } from "tauri-plugin-store-api";
-import { readTextFile } from '@tauri-apps/api/fs';
+import { readTextFile, writeTextFile } from '@tauri-apps/api/fs';
 
 import FileModal from "./FileModal";
 
-export default function FileSet({updateCharacter}) {
-    const [openModal, setOpenModal] = useState(true);
+export default function FileSet({character, updateCharacter}) {
+    const [openModal, setOpenModal] = useState(false);
+    const [mode, setMode] = useState(0);
     const [charPath, setCharPath] = useState(null);
 
     const store = new Store("store.json");
@@ -46,15 +47,31 @@ export default function FileSet({updateCharacter}) {
     useEffect(() => {
         getData(charPath);
     },[charPath]);
+    function clickHandler(val) {
+        setOpenModal(true);
+        setMode(val);
+    };
+    async function saveHandler() {
+        const filePath = charPath;
+        try {
+            await writeTextFile({
+            path: filePath,
+            contents: JSON.stringify(character, null, 2) // Convert character object to JSON with proper formatting
+            });
+            console.log('Character saved successfully to charObj.json');
+        } catch (error) {
+            console.error('Error saving character to charObj.json:', error);
+        }
+    };
 
     return (
         <>
             <section>
-                <button>Save</button>
-                <button>New</button>
-                <button>Load</button>
+                <button onClick={saveHandler}>Save</button>
+                <button onClick={() => clickHandler(1)}>New</button>
+                <button onClick={() => clickHandler(0)}>Load</button>
             </section>
-            <FileModal active={openModal} store={store} updateCharacter={updateCharacter}/>
+            <FileModal active={openModal} mode={mode} onClose={() => setOpenModal(false)} store={store} updateCharacter={updateCharacter}/>
         </>
     )
 }

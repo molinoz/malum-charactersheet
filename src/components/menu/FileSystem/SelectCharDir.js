@@ -2,7 +2,7 @@ import React,{useState, useEffect} from 'react';
 import { open } from '@tauri-apps/api/dialog';
 import { readTextFile } from '@tauri-apps/api/fs';
 
-export default function SelectCharDir({store, updateCharacter, updateCharDir}) {
+export default function SelectCharDir({mode, store, updateCharacter, updateCharDir}) {
   async function readJsonFile(path) {
     try {
         const file = await readTextFile(path);
@@ -44,6 +44,7 @@ export default function SelectCharDir({store, updateCharacter, updateCharDir}) {
       console.error('Error retrieving defaultDir:', error);
     }
   };
+  if(mode === 1) return null;
   return (
       <div>
         <button onClick={chooseCharDir}>Select Character Folder</button>

@@ -4,7 +4,7 @@ import SelectDefaultDir from "./FileSystem/SelectDefaultDir";
 import SelectCharDir from "./FileSystem/SelectCharDir";
 import CreateCharDir from "./FileSystem/CreateCharDir";
 
-export default function FileModal({active, store, updateCharacter}) {
+export default function FileModal({active, mode, onClose, store, updateCharacter}) {
     const [CharDir, SetCharDir] = useState('');
     const updateCharDir = (newCharDir) => {
         SetCharDir(newCharDir);
@@ -25,12 +25,24 @@ export default function FileModal({active, store, updateCharacter}) {
     if(!active) return null;
     return (
         <>
-            <div className='overlay'>
-                <div className='modalContainer'>
-                    <SelectDefaultDir store={store}/>
-                    <SelectCharDir store={store} updateCharacter={updateCharacter} updateCharDir={updateCharDir}/>
-                    <CreateCharDir store={store} updateCharacter={updateCharacter} updateCharDir={updateCharDir}/>
-                    <p>{CharDir}</p>
+            <div onClick={onClose} className='overlay'>
+                <div
+                    onClick={(e) => {
+                    e.stopPropagation();
+                    }}
+                    className='modalContainer'
+                >
+                    <div className='modalRight'>
+                        <div>
+                            <SelectDefaultDir store={store}/>
+                            <SelectCharDir mode={mode} store={store} updateCharacter={updateCharacter} updateCharDir={updateCharDir}/>
+                            <CreateCharDir mode={mode} store={store} updateCharacter={updateCharacter} updateCharDir={updateCharDir}/>
+                            <p>{CharDir}</p>
+                        </div>
+                        <p className='closeBtn' onClick={onClose}>
+                            X
+                        </p>
+                    </div>
                 </div>
             </div>
         </>
