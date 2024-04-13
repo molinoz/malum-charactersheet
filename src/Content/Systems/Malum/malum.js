@@ -403,16 +403,14 @@ export const malum = {
 						},
 					},
 					skills: {
-						combat: {
+						Combat: {
 							axes: {
 								skillName: "Axes",
 								category: 'Combat',
 								description: "",
 								baseMod: "AGI",
-								training: "U",
-								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								baseTraining: "U",
+								setTraining: "U",
 								miscMod: {},
 								totalMod: 0,
 							},
@@ -525,7 +523,7 @@ export const malum = {
 								totalMod: 0,
 							},
 						},
-						utility: {
+						Utility: {
 							athletics: {
 								skillName: "Athletics",
 								category: 'Utility',

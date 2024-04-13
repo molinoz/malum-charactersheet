@@ -1,13 +1,33 @@
 .Board {
-    display: flex;
-    border: 1px solid red;
-    justify-content: center;
+  display: flex;
+  border: 1px solid red;
+  justify-content: center;
+}
+.SkillBoard {
+  flex-direction: column;
+}
+
+.SkillBox {
+  display: flexbox;
+}
+
+.length2 {
+  width: 100px;
+}
+
+.length1 {
+  width: 50px;
 }
 
 .Box {
   display: grid;
   align-items: center;
   justify-content: center;
+}
+
+.skill {
+  display: flex;
+  flex-direction: row;
 }
 
 .Box p {
@@ -17,6 +37,14 @@
 
 .outline {
   border: 1px solid black;
+}
+
+.outline .outline {
+  padding: 5px;
+}
+
+.outline p {
+  margin: 0px;
 }
 
 .Part {
