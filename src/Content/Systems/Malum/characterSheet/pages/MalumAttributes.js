@@ -10,8 +10,8 @@ export default function MalumAttributes({character, updateCharacter}) {
                 <h1>Attributes</h1>
             </header>
             <PointBuyAbilityBoard character={character} updateCharacter={updateCharacter}/>
-            <SkillBoard type="combat" character={character} updateCharacter={updateCharacter}/>
-            <SkillBoard type="utility" character={character} updateCharacter={updateCharacter}/>
+            <SkillBoard type="Combat" character={character} updateCharacter={updateCharacter}/>
+            <SkillBoard type="Utility" character={character} updateCharacter={updateCharacter}/>
         </>
     )
 }

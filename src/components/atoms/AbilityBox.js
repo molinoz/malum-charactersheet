@@ -5,7 +5,7 @@ import { malum } from "../../Content/Systems/Malum/malum";
 
 function AbilityBox({character ,updateCharacter, ...props}) {
     const [inc, setInc] = useState(props.inc)
-    let aScore = 10 + inc;
+    let aScore = props.baseScore + inc;
 
     function abilityMod(score) {
         return Math.floor((score - 10)/2)
@@ -13,13 +13,17 @@ function AbilityBox({character ,updateCharacter, ...props}) {
     function modSym(n) {
         return (n<0?"":"+") + n;
     };
-    let abilMod = 3
+    let abilMod = modSym(abilityMod(aScore))
     function rollClick() {
-        return console.log(roll("d20")+abilMod)
+        let mod = parseInt(abilMod);
+        let ran = roll("d20");
+        console.log(`${ran}${abilMod}`)
+        return console.log(ran+mod)
     }
     useEffect(() => {
-        malum.update.attri.stats.incCost(character, updateCharacter, malum.get.stats.incCost(inc), props.name)
-    },[inc])
+        malum.update.attri.stats.incCost(character, updateCharacter, malum.get.stats.incCost(inc), props.name);
+        setTimeout(malum.update.attri.stats.score(character, updateCharacter, aScore, props.name), 100)
+    },[inc]);
 
     return (
       <>
@@ -28,7 +32,7 @@ function AbilityBox({character ,updateCharacter, ...props}) {
                 <p>{props.name}</p>
             </section>
             <button onClick={rollClick} className="outline">
-                <h2>{ modSym(abilityMod(aScore)) }</h2>
+                <h2>{ abilMod }</h2>
             </button>
             <section className="outline">
                 <p>{aScore}</p>
@@ -40,10 +44,13 @@ function AbilityBox({character ,updateCharacter, ...props}) {
                 max={6}
                 min={-2}
                 value={inc}
+                onkeydown={(event) => {
+                    event.preventDefault();
+                  }}
                 onChange={(event) => {
                     setInc(parseInt(event.target.value));
                     malum.update.attri.stats.inc(character, updateCharacter, event, props.name);
-                    //console.log("cost is:", malum.get.stats.incCost(event.target.value))
+                    console.log("cost is:", malum.get.stats.incCost(event.target.value))
                 }}
             />
             <p>{character.attri.stats[props.name].incCost}</p>

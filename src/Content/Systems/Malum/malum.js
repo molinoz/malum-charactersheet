@@ -79,12 +79,15 @@ export const malum = {
 		attri:{
 			stats:{
 				inc: (character, updateCharacter, event, stat) => {
-					//console.log('event value received:',parseInt(event.target.value))
+					console.log('event value received:',parseInt(event.target.value))
 					updateCharacter({...character, attri: {...character.attri, stats:{...character.attri.stats, [stat]: {...character.attri.stats[stat], inc: parseInt(event.target.value)}}}});
-					//console.log('inc is:', character.attri.stats[stat].inc)
+					console.log('inc is:', character.attri.stats[stat].inc)
 				},
 				incCost: (character, updateCharacter, value, stat) => {
 					updateCharacter({...character, attri: {...character.attri, stats:{...character.attri.stats, [stat]: {...character.attri.stats[stat], incCost: value}}}});
+				},
+				score: (character, updateCharacter, value, stat) => {
+					updateCharacter({...character, attri: {...character.attri, stats:{...character.attri.stats, [stat]: {...character.attri.stats[stat], score: value}}}});
 				}
 			},
 		},

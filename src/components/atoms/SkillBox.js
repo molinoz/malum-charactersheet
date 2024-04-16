@@ -1,8 +1,10 @@
 import React from "react";
 import '../Styles/mystyle.css';
 import { useState } from "react";
+import { malum } from "../../Content/Systems/Malum/malum";
 
 export default function SkillBox({character, updateCharacter, ...props}) {
+    
 
     return(
         <div className="Box skill">
@@ -16,7 +18,7 @@ export default function SkillBox({character, updateCharacter, ...props}) {
                 <p>{props.name}</p>
             </section>
             <section className="outline">
-                <p>BonusMod</p>
+                <p>{0+3+2}</p>
             </section>
         </div>
     )
