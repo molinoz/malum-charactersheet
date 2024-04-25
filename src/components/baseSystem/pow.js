@@ -24,11 +24,11 @@ export const pow = {
 		list: (container, prop) => {},
 	},
 	props: {
-		sum: (stats) => {
+		sum: (stats, key) => {
 			let total = 0;
 			Object.values(stats).forEach((stat) => {
 				//console.log('Value is',stat.incCost)
-				total += stat.incCost;
+				total += stat[key];
 				//console.log('Total is',total)
 			});
 			

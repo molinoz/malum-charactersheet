@@ -78,18 +78,40 @@ export const malum = {
 		},
 		attri:{
 			stats:{
-				inc: (character, updateCharacter, event, stat) => {
-					console.log('event value received:',parseInt(event.target.value))
-					updateCharacter({...character, attri: {...character.attri, stats:{...character.attri.stats, [stat]: {...character.attri.stats[stat], inc: parseInt(event.target.value)}}}});
-					console.log('inc is:', character.attri.stats[stat].inc)
+				inc: (character, value, stat) => {
+					console.log('event value received:',value)
+					return {...character, attri: {...character.attri, stats:{...character.attri.stats, [stat]: {...character.attri.stats[stat], inc: value}}}};
 				},
-				incCost: (character, updateCharacter, value, stat) => {
-					updateCharacter({...character, attri: {...character.attri, stats:{...character.attri.stats, [stat]: {...character.attri.stats[stat], incCost: value}}}});
+				incCost: (character, value, stat) => {
+					return {...character, attri: {...character.attri, stats:{...character.attri.stats, [stat]: {...character.attri.stats[stat], incCost: value}}}};
 				},
-				score: (character, updateCharacter, value, stat) => {
-					updateCharacter({...character, attri: {...character.attri, stats:{...character.attri.stats, [stat]: {...character.attri.stats[stat], score: value}}}});
+				score: (character, value, stat) => {
+					return {...character, attri: {...character.attri, stats:{...character.attri.stats, [stat]: {...character.attri.stats[stat], score: value}}}};
+				},
+				mod: (character, value, stat) => {
+					return {...character, attri: {...character.attri, stats:{...character.attri.stats, [stat]: {...character.attri.stats[stat], mod: value}}}};
+				},
+				totalMod: (character, value, stat) => {
+					return {...character, attri: {...character.attri, stats:{...character.attri.stats, [stat]: {...character.attri.stats[stat], totalMod: value}}}};
 				}
 			},
+			skills: {
+				level: (character, category, value, skill) => {
+					let newChar = {...character};
+					newChar.attri.skills[category][skill].level = value;
+					return newChar;
+				},
+				mod: (character, category, value, skill) => {
+					let newChar = {...character};
+					newChar.attri.skills[category][skill].totalMod = value;
+					return newChar;
+				},
+				cost: (character, category, value, skill) => {
+					let newChar = {...character};
+					newChar.attri.skills[category][skill].levelCost = value;
+					return newChar;
+				},
+			}
 		},
 	},
 	remove: {
@@ -100,7 +122,7 @@ export const malum = {
 	use: {
 		stat: {
 			mod: (character, stat) => {
-				return character.attri.stats[stat].mod
+				return character.attri.stats[stat].totalMod
 			},
 			full:  (character, stat) => {
 				return character.attri.stats[stat].full
@@ -155,17 +177,48 @@ export const malum = {
 					cost: 12,
 				},
 			},
+			numToLvl: (lvl) => {
+				let training = '';
+				switch (lvl) {
+					case 0:
+						training = 'U';
+						break;
+					case 1:
+						training = 'T';
+						break;
+					case 2:
+						training = 'N';
+						break;
+					case 3:
+						training = 'A';
+						break;
+					case 4:
+						training = 'I';
+						break;
+					case 5:
+						training = 'E';
+						break;
+					case 6:
+						training = 'M';
+						break;
+					case 7:
+						training = 'G';
+						break;
+									
+				}
+				return training
+			},
 			full: (system, lvl) => {
 				return this[system].rules.training.level[lvl].full
 			},
-			mod: (system, lvl) => {
-				return this[system].rules.training.level[lvl].mod
+			mod: (lvl) => {
+				return malum.use.training.level[lvl].mod
 			},
 			roll: (system, lvl) => {
 				return this[system].rules.training.level[lvl].roll
 			},
-			cost: (system, lvl) => {
-				return this[system].rules.training.level[lvl].cost
+			cost: (lvl) => {
+				return malum.use.training.level[lvl].cost
 			},
 		},
 	},
@@ -191,9 +244,7 @@ export const malum = {
 				return Math.floor( (score - 10) / 2 );
 			},
 			mod: (character,stat) => {
-				let base = character.attri.stats[stat].baseMod;
-				let misc = character.attri.stats[stat].miscMod;
-				return base + pow.props.sum(misc);
+				return character.attri.stats[stat].totalMod;
 			},
 			roll: (character,stat) => {
 				let mod = character.attri.stats[stat].mod;
@@ -202,20 +253,32 @@ export const malum = {
 		},
 		skills: {
 			SPI: (character) => {},
-			baseMod: (character,skill) => {
-				return character.attri.stats[skill].totalMod
+			totalMod: (character,skill) => {
+				return character.attri.skills[skill].totalMod
 			},
 			trainingMod: (character, skill) => {
-				let training = character.attri.stats[skill].training;
+				let training = character.attri.skills[skill].training;
 				return test.use.training.mod(training);
 			},
 			trainingFull: (character, skill) => {
-				let training = character.attri.stats[skill].training;
+				let training = character.attri.skills[skill].training;
 				return test.use.training.full(training);
 			},
 			trainingCost: (character, skill) => {
-				let training = character.attri.stats[skill].training;
+				let training = character.attri.skills[skill].training;
 				return test.use.training.cost(training);
+			},
+			learned: (skills) => {
+				let count = 0;
+				for (let skill in skills) {
+					let subskills = skills[skill];
+					for (let subskill in subskills) {
+						if (subskills[subskill].trained === false && subskills[subskill].level > 0) {
+							count++;
+						}
+					}
+				}
+				return count;
 			},
 			mod: (character,skill) => {},
 			roll: (character,skill) => {},
@@ -306,7 +369,7 @@ export const malum = {
 	},
 	make: {
 		character:(name) => {
-			 return {
+			return {
 				info: {
 					file: name,
 					img: "",
@@ -335,8 +398,11 @@ export const malum = {
 				attri: {
 					baseASI: 8,
 					ASI: 0,
-					baseSPI: 0,
+					baseSPI: 5,
 					SPI: 0,
+					SP: 0,
+					spentSP: 0,
+					skillsTrained: 0,
 					stats: {
 						STR: {
 							full: "Strength",
@@ -407,423 +473,458 @@ export const malum = {
 					},
 					skills: {
 						Combat: {
-							axes: {
+							Axes: {
 								skillName: "Axes",
 								category: 'Combat',
 								description: "",
 								baseMod: "AGI",
-								baseTraining: "U",
-								setTraining: "U",
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							blades: {
+							Blades: {
 								skillName: "Blades",
 								category: 'Combat',
 								description: "",
 								baseMod: "AGI",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							blunts: {
+							Blunts: {
 								skillName: "Blunts",
 								category: 'Combat',
 								description: "",
 								baseMod: "AGI",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							bows: {
+							Bows: {
 								skillName: "Bows",
 								category: 'Combat',
 								description: "",
 								baseMod: "AGI",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							heavies: {
+							Heavies: {
 								skillName: "Heavies",
 								category: 'Combat',
 								description: "",
 								baseMod: "AGI",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							pistols: {
+							Pistols: {
 								skillName: "Pistols",
 								category: 'Combat',
 								description: "",
 								baseMod: "AGI",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							rifles: {
+							Rifles: {
 								skillName: "Rifles",
 								category: 'Combat',
 								description: "",
 								baseMod: "AGI",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							shotguns: {
+							Shotguns: {
 								skillName: "Shotguns",
 								category: 'Combat',
 								description: "",
 								baseMod: "AGI",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							spears: {
+							Spears: {
 								skillName: "Spears",
 								category: 'Combat',
 								description: "",
 								baseMod: "AGI",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							unarmed: {
+							Unarmed: {
 								skillName: "Unarmed",
 								category: 'Combat',
 								description: "",
 								baseMod: "AGI",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
 						},
 						Utility: {
-							athletics: {
+							Athletics: {
 								skillName: "Athletics",
 								category: 'Utility',
 								description: "",
 								baseMod: "STR",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							dexterity: {
+							Dexterity: {
 								skillName: "Dexterity",
 								category: 'Utility',
 								description: "",
 								baseMod: "AGI",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							nimble: {
+							Nimble: {
 								skillName: "Nimble",
 								category: 'Utility',
 								description: "",
 								baseMod: "AGI",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							stealth: {
+							Stealth: {
 								skillName: "Stealth",
 								category: 'Utility',
 								description: "",
 								baseMod: "AGI",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							endurance: {
+							Endurance: {
 								skillName: "Endurance",
 								category: 'Utility',
 								description: "",
 								baseMod: "CON",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							immunity: {
+							Immunity: {
 								skillName: "Immunity",
 								category: 'Utility',
 								description: "",
 								baseMod: "CON",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							arcana: {
+							Arcana: {
 								skillName: "Arcana",
 								category: 'Utility',
 								description: "",
 								baseMod: "INT",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							chemistry: {
+							Chemistry: {
 								skillName: "Chemistry",
 								category: 'Utility',
 								description: "",
 								baseMod: "INT",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							computers: {
+							Computers: {
 								skillName: "Computers",
 								category: 'Utility',
 								description: "",
 								baseMod: "INT",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							engineering: {
+							Engineering: {
 								skillName: "Engineering",
 								category: 'Utility',
 								description: "",
 								baseMod: "INT",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							knowledge: {
+							Knowledge: {
 								skillName: "Knowledge",
 								category: 'Utility',
 								description: "",
 								baseMod: "INT",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							spellcraft: {
+							Spellcraft: {
 								skillName: "Spellcraft",
 								category: 'Utility',
 								description: "",
 								baseMod: "INT",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							theology: {
+							Theology: {
 								skillName: "Theology",
 								category: 'Utility',
 								description: "",
 								baseMod: "INT",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							awareness: {
+							Awareness: {
 								skillName: "Awareness",
 								category: 'Utility',
 								description: "",
 								baseMod: "WIS",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							cooking: {
+							Cooking: {
 								skillName: "Cooking",
 								category: 'Utility',
 								description: "",
 								baseMod: "WIS",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							crafting: {
+							Crafting: {
 								skillName: "Crafting",
 								category: 'Utility',
 								description: "",
 								baseMod: "WIS",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							fabrication: {
+							Fabrication: {
 								skillName: "Fabrication",
 								category: 'Utility',
 								description: "",
 								baseMod: "WIS",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							medical: {
+							Medical: {
 								skillName: "Medical",
 								category: 'Utility',
 								description: "",
 								baseMod: "WIS",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							metalworking: {
+							Metalworking: {
 								skillName: "Metalworking",
 								category: 'Utility',
 								description: "",
 								baseMod: "WIS",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							survival: {
+							Survival: {
 								skillName: "Survival",
 								category: 'Utility',
 								description: "",
 								baseMod: "WIS",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							charisma: {
+							Charisma: {
 								skillName: "Charisma",
 								category: 'Utility',
 								description: "",
 								baseMod: "WIL",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							deception: {
+							Deception: {
 								skillName: "Deception",
 								category: 'Utility',
 								description: "",
 								baseMod: "WIL",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							empathy: {
+							Empathy: {
 								skillName: "Empathy",
 								category: 'Utility',
 								description: "",
 								baseMod: "WIL",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							intimidation: {
+							Intimidation: {
 								skillName: "Intimidation",
 								category: 'Utility',
 								description: "",
 								baseMod: "WIL",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},
-							morale: {
+							Morale: {
 								skillName: "Morale",
 								category: 'Utility',
 								description: "",
 								baseMod: "WIL",
 								training: "U",
 								trainingFull: "",
-								trainingMod: 0,
-								trainingCost: 0,
+								trained: false,
+								level: 0,
+								levelCost: 0,
 								miscMod: {},
 								totalMod: 0,
 							},

@@ -2,6 +2,7 @@ import React from "react";
 import { roll } from 'dnd5e-dice-roller';
 import { useState, useEffect } from "react";
 import { malum } from "../../Content/Systems/Malum/malum";
+import NumInput from "./NumInput";
 
 function AbilityBox({character ,updateCharacter, ...props}) {
     const [inc, setInc] = useState(props.inc)
@@ -13,16 +14,22 @@ function AbilityBox({character ,updateCharacter, ...props}) {
     function modSym(n) {
         return (n<0?"":"+") + n;
     };
-    let abilMod = modSym(abilityMod(aScore))
+    let baseMod = abilityMod(aScore);
+    let miscMod = 0;
+    let totalMod = baseMod + miscMod;
     function rollClick() {
-        let mod = parseInt(abilMod);
         let ran = roll("d20");
-        console.log(`${ran}${abilMod}`)
-        return console.log(ran+mod)
+        console.log(`${ran}${modSym(totalMod)}`)
+        return console.log(`${props.name}: ${ran+totalMod}`)
     }
+
     useEffect(() => {
-        malum.update.attri.stats.incCost(character, updateCharacter, malum.get.stats.incCost(inc), props.name);
-        setTimeout(malum.update.attri.stats.score(character, updateCharacter, aScore, props.name), 100)
+        let updatedChar = malum.update.attri.stats.inc(character, inc, props.name);
+        updatedChar = malum.update.attri.stats.incCost(updatedChar, malum.get.stats.incCost(inc), props.name);
+        updatedChar = malum.update.attri.stats.score(updatedChar, aScore, props.name);
+        updatedChar = malum.update.attri.stats.mod(updatedChar, abilityMod(aScore), props.name);
+        updatedChar = malum.update.attri.stats.totalMod(updatedChar, totalMod, props.name);
+        updateCharacter(updatedChar)
     },[inc]);
 
     return (
@@ -32,27 +39,15 @@ function AbilityBox({character ,updateCharacter, ...props}) {
                 <p>{props.name}</p>
             </section>
             <button onClick={rollClick} className="outline">
-                <h2>{ abilMod }</h2>
+                <h2>{ modSym(totalMod) }</h2>
             </button>
             <section className="outline">
                 <p>{aScore}</p>
             </section>
-            <input
-                className="outline"
-                id="increase"
-                type="number"
-                max={6}
-                min={-2}
-                value={inc}
-                onkeydown={(event) => {
-                    event.preventDefault();
-                  }}
-                onChange={(event) => {
-                    setInc(parseInt(event.target.value));
-                    malum.update.attri.stats.inc(character, updateCharacter, event, props.name);
-                    console.log("cost is:", malum.get.stats.incCost(event.target.value))
-                }}
-            />
+            <section className="spinNum outline" style={{display:'flex', flexDirection:'row'}}>
+                <p>{inc}</p>
+                <NumInput onChange={setInc} value={inc} max={6} min={-2}/>
+            </section>
             <p>{character.attri.stats[props.name].incCost}</p>
         </section>
       </>

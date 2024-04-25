@@ -6,7 +6,7 @@ import { pow } from "../baseSystem/pow";
 
 export default function PointBuyAbilityBoard({character, updateCharacter}) {
     const [ASI, setASI] = useState(0)
-    let ASP = 8 + ASI - pow.props.sum(character.attri.stats);
+    let ASP = 8 + ASI - pow.props.sum(character.attri.stats, "incCost");
 
     return(
         <div>

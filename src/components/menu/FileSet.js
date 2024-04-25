@@ -58,7 +58,7 @@ export default function FileSet({character, updateCharacter}) {
             path: filePath,
             contents: JSON.stringify(character, null, 2) // Convert character object to JSON with proper formatting
             });
-            console.log('Character saved successfully to charObj.json');
+            console.log('Character saved successfully to charObj.json', character);
         } catch (error) {
             console.error('Error saving character to charObj.json:', error);
         }
