@@ -1,5 +1,6 @@
 import React from "react";
 import malum from "../../malum";
+import FeatureSheet from "../../../../../components/baseSystem/FeatureSheet";
 
 export default function MalumFeatures() {
     return (
@@ -7,6 +8,7 @@ export default function MalumFeatures() {
             <header>
                 <h1>Features</h1>
             </header>
+            <FeatureSheet />
         </>
     )
 }

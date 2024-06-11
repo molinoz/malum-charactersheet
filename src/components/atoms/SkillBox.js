@@ -3,7 +3,7 @@ import '../Styles/mystyle.css';
 import { useState, useEffect } from "react";
 import NumInput from "./NumInput";
 import { malum } from "../../Content/Systems/Malum/malum";
-
+import { roll } from "dnd5e-dice-roller";
 export default function SkillBox({character, updateCharacter, name, baseMod, cat, ...props}) {
     const [level, setLevel] = useState(props.lvl);
     let abilMod = malum.get.stats.mod(character, baseMod);
@@ -17,10 +17,13 @@ export default function SkillBox({character, updateCharacter, name, baseMod, cat
         updatedChar = malum.update.attri.skills.cost(character, cat, trainingCost, name); 
         updateCharacter(updatedChar)
     },[level]);
+    function modSym(n) {
+        return (n<0?"":"+") + n;
+    };
     function rollClick() {
         let ran = roll("d20");
         console.log(`${ran}${modSym(totalMod)}`)
-        return console.log(`${name}: ${ran+totalMod}`)
+        return console.log(`${name} Skill: ${ran+totalMod}`)
     }
     return(
         <div className="Box skill">
@@ -35,7 +38,7 @@ export default function SkillBox({character, updateCharacter, name, baseMod, cat
                 <p>{name}</p>
             </section>
             <section className="outline">
-                <button onClick={rollClick}>{totalMod}</button>
+                <button onClick={rollClick}>{modSym(totalMod)}</button>
             </section>
         </div>
     )

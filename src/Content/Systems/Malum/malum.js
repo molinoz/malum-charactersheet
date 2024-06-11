@@ -371,10 +371,15 @@ export const malum = {
 		character:(name) => {
 			return {
 				info: {
+					system: "Malum.Test",
+					series: "test",
+					campaign: "",
+					list: "Characters",
+					type: "Player",
+					creator: "",
 					file: name,
 					img: "",
 					fullName: "",
-					creator: "",
 					choices: {
 						origin: '',
 						history: '',
@@ -971,6 +976,42 @@ export const malum = {
 						}
 					}
 				},
+				feats: {
+					background: {
+						origin: {},
+						history: {},
+						card: {},
+						sign: {}
+					},
+					additionals: {
+						perk: {
+							name: "Perks",
+							description: "You can choose from the perk list",
+							infoBlock: {
+								type: "listShop",
+								menu: "modal",
+								title: ["name", "points"]
+							},
+							points: 1,
+							chosen: [],
+							choices: {list:"Perk"},
+						},
+						trait: {
+							name: "Traits",
+							description: "You can choose from the trait list",
+							infoBlock: {
+								type: "listShop",
+								menu: "modal",
+								title: ["name", "points"]
+							},
+							points: 1,
+							chosen: [],
+							choices: {list:"Perk"},
+						},
+					},
+					archetype: {},
+					subtype: {},
+				},
 				inventory: {
 					currency: 0,
 					weight: {
@@ -995,47 +1036,7 @@ export const malum = {
 					},
 					savedItems: {},
 				},
-				feats: {
-					background: {
-						origin: {
-							character: "",
-							resist: "",
-							statBonus: {
-								ATK: 1,
-							},
-							size: 0,
-							baseSkills: [""],
-							culture: [""],
-							tags: [""],
-							trait: {},
-						},
-						sign: {
-							character: "",
-							element: "",
-							suit: "",
-							horseman: "",
-							stone: "",
-						},
-					},
-					additional: {},
-					archetype: {
-						character: "",
-						hpBonus: 0,
-						baseSkills: "",
-						LVL1: {},
-						LVL2: {},
-						LVL3: {},
-						LVL4: {},
-						LVL5: {},
-						LVL6: {},
-						LVL7: {},
-						LVL8: {},
-						LVL9: {},
-					},
-					subtype: {
-						LVL1: {},
-					},
-				},
+				spells: []
 			}
 		},
 		origin: (character) => {
