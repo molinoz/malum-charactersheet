@@ -1,8 +1,10 @@
 import React from "react";
 
-export default function Box(){
+export default function Box({children}){
     
     return(
-        <div></div>
+        <div>
+            {children}
+        </div>
     );
 }

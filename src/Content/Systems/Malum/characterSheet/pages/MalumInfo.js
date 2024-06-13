@@ -1,6 +1,7 @@
 import React from "react";
 import { malum } from "../../malum";
 import Box from "../../../../../components/atoms/Box.js";
+import LabeledInput from "../../../../../components/atoms/LabeledInput.js";
 
 export default function MalumInfo({character, updateCharacter}) {
     return (
@@ -14,27 +15,47 @@ export default function MalumInfo({character, updateCharacter}) {
                     <img></img>
                     <section>
                         <section className="Names">
-                            <input type="text" id="characterName"/>
-                            <input type="text" id="playerName"/>
+                            <LabeledInput id="Character Name" type="solotext"/>
+                            <LabeledInput id="Player Name" type="solotext"/>
                         </section>
                         <section>
-                            <Box id="Background"></Box>
-                            <Box id="Fate"></Box>
+                            <Box id="Background">
+                                <LabeledInput id="Origin" type="dropList" choices="Origin" property=""/>
+                                <LabeledInput id="History" type="dropList" choices="History"  property=""/>
+                            </Box>
+                            <Box id="Fate">
+                                <LabeledInput id="Star Sign" type="dropList" choices="Signs"  property=""/>
+                                <LabeledInput id="Tarot Card" type="dropList" choices="Cards"  property=""/>
+                            </Box>
                         </section>
                     </section>
                 </section>
                 <section id="section2">
-                    <Box id="Role"></Box>
-                    <Box id="Description"></Box>
-                    <Box id="Relations"></Box>
+                    <Box id="Role">
+                        <LabeledInput id="Level" type="numSpin" min={0} max={20}  property=""/>
+                        <LabeledInput id="Archetype" type="dropList" choices="Archetype"  property=""/>
+                        <LabeledInput id="Subtype" type="dropList" choices="Subtype" property=""/>
+                    </Box>
+                    <Box id="Description">
+                        <LabeledInput id="Age" type="text"  property=""/>
+                        <LabeledInput id="Height" type="text"  property=""/>
+                        <LabeledInput id="Weight" type="text"  property=""/>
+                    </Box>
+                    <Box id="Relations">
+                        <LabeledInput id="Membership" type="textList" property=""/>
+                        <LabeledInput id="Allies" type="textList" property=""/>
+                        <LabeledInput id="Enemies" type="textList" property=""/>
+                    </Box>
                 </section>
                 <section id="section3">
                     <Box id="Backstory">
-                        <textarea/>
+                        <LabeledInput id="Backstory" type="textarea" property=""/>
+                        <LabeledInput id="Culture" type="textList" property=""/>
+                        <LabeledInput id="Campaign" type="text" property=""/>
+                        <LabeledInput id="System" type="text" property=""/>
                     </Box>
                     <section>
-                        <Box />
-                        <Box />
+                        
                     </section>
                 </section>
             </main>
