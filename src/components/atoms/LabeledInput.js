@@ -7,42 +7,42 @@ export default function LabeledInput({id,type,choices, min, max, property}) {
     switch(type){
         case 'text':
             return (
-                <>
-                    <label for={id}>{id}</label>
+                <div>
+                    <label for={id}>{id}:</label>
                     <input type="text" id={id}/>
-                </>
+                </div>
             )
         case 'solotext':
             return (<input type="text" placeholder={id}/>)
         case 'dropList':
             return (
-                <>
-                    <label for={id}>{id}</label>
+                <div>
+                    <label for={id}>{id}:</label>
                     <input id={id} value="Droplist"/>
-                </>
+                </div>
             );
         case 'numSpin':
             return(
-                <>
-                    <label for={id}>{id}</label>
-                    <section className="spinNum outline" style={{display:'flex', flexDirection:'row'}}>
-                        <p>{num}</p>
+                <div style={{display:'flex', flexDirection:'row'}}>
+                    <label for={id}>{id}:</label>
+                    <section className="spinNum outline" style={{display:'flex', flexDirection:'row'}} id={id}>
+                        <p style={{}}>{num}</p>
                         <NumInput onChange={setNum} value={num} max={max} min={min}/>
                     </section>
-                </>
+                </div>
             );
         case 'textList':
             return(
-                <>
-                    <label for={id}>{id}</label>
+                <div>
+                    <label for={id}>{id}:</label>
                     <input id={id} value="textList"/>
-                </>
+                </div>
             );
         case 'textarea':
             return(
-                <>
+                <div>
                     <textarea id={id}/>
-                </>
+                </div>
             );
         default:
             return <p>ERROR</p>

@@ -18,7 +18,7 @@ export default function MalumInfo({character, updateCharacter}) {
                             <LabeledInput id="Character Name" type="solotext"/>
                             <LabeledInput id="Player Name" type="solotext"/>
                         </section>
-                        <section>
+                        <section  className="infoSection">
                             <Box id="Background">
                                 <LabeledInput id="Origin" type="dropList" choices="Origin" property=""/>
                                 <LabeledInput id="History" type="dropList" choices="History"  property=""/>
@@ -30,7 +30,7 @@ export default function MalumInfo({character, updateCharacter}) {
                         </section>
                     </section>
                 </section>
-                <section id="section2">
+                <section id="section2" className="infoSection">
                     <Box id="Role">
                         <LabeledInput id="Level" type="numSpin" min={0} max={20}  property=""/>
                         <LabeledInput id="Archetype" type="dropList" choices="Archetype"  property=""/>
@@ -51,11 +51,10 @@ export default function MalumInfo({character, updateCharacter}) {
                     <Box id="Backstory">
                         <LabeledInput id="Backstory" type="textarea" property=""/>
                         <LabeledInput id="Culture" type="textList" property=""/>
-                        <LabeledInput id="Campaign" type="text" property=""/>
-                        <LabeledInput id="System" type="text" property=""/>
                     </Box>
                     <section>
-                        
+                        <LabeledInput id="Campaign" type="text" property=""/>
+                        <LabeledInput id="System" type="text" property=""/>
                     </section>
                 </section>
             </main>
