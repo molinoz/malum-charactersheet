@@ -2,7 +2,7 @@ import React from "react";
 import NumInput from "../atoms/NumInput.js"
 import { useState } from "react";
 
-export default function LabeledInput({id,type,choices, min, max, property}) {
+export default function LabeledInput({id,type,choices,min,max,img,property}) {
     const [num, setNum] = useState(0);
     switch(type){
         case 'text':
@@ -41,7 +41,14 @@ export default function LabeledInput({id,type,choices, min, max, property}) {
         case 'textarea':
             return(
                 <div>
-                    <textarea id={id}/>
+                    <textarea id={id} style={{width:"114vh", height:"200px"}}/>
+                </div>
+            );
+        case 'image':
+            let non = "https://unpkg.com/pixelarticons@1.8.0/svg/avatar.svg";
+            return(
+                <div>
+                    <img src={img?img:non} style={{width: "110px", border: "solid black 2px", marginRight:"10px"}}/>
                 </div>
             );
         default:

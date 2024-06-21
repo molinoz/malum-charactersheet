@@ -8,17 +8,17 @@ export default function MalumInfo({character, updateCharacter}) {
         <>
             <header>
                 <h1>Info</h1>
-                <input type="text" value={character.info.file} onChange={(event) => {malum.update.info.file(character, updateCharacter, event);}} />
+                {/* <input type="text" value={character.info.file} onChange={(event) => {malum.update.info.file(character, updateCharacter, event);}} /> */}
             </header>
-            <main>
-                <section id="section1">
-                    <img></img>
+            <main style={{margin: "1vh"}}>
+                <section id="section1" className="infoSection" style={{border: "0px"}}>
+                    <LabeledInput id="Avatar" type="image"/>
                     <section>
                         <section className="Names">
                             <LabeledInput id="Character Name" type="solotext"/>
                             <LabeledInput id="Player Name" type="solotext"/>
                         </section>
-                        <section  className="infoSection">
+                        <section  className="infoSection" style={{margin:"0px"}}>
                             <Box id="Background">
                                 <LabeledInput id="Origin" type="dropList" choices="Origin" property=""/>
                                 <LabeledInput id="History" type="dropList" choices="History"  property=""/>
@@ -47,12 +47,12 @@ export default function MalumInfo({character, updateCharacter}) {
                         <LabeledInput id="Enemies" type="textList" property=""/>
                     </Box>
                 </section>
-                <section id="section3">
+                <section id="section3" className="infoSection" style={{display: "block"}}>
                     <Box id="Backstory">
                         <LabeledInput id="Backstory" type="textarea" property=""/>
                         <LabeledInput id="Culture" type="textList" property=""/>
                     </Box>
-                    <section>
+                    <section style={{display: "flex", border: "solid black 1px"}}>
                         <LabeledInput id="Campaign" type="text" property=""/>
                         <LabeledInput id="System" type="text" property=""/>
                     </section>

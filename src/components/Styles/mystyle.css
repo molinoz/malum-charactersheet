@@ -166,6 +166,10 @@
 }
 
 /* Box styles */
+.Names {
+  margin-bottom: 10px;
+}
+
 .infoBlock {
   border: solid black 1px;
   display: flex;
@@ -173,7 +177,6 @@
 }
 
 .infoBlock > h2 {
-  border: solid black 1px;
   border-bottom: solid black 2px;
   margin: 0;
 }
@@ -183,4 +186,5 @@
   display: flex;
   flex-direction: row;
   border: solid black 1px;
+  width: fit-content;
 }
