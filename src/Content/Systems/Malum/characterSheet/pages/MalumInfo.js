@@ -6,12 +6,12 @@ import LabeledInput from "../../../../../components/atoms/LabeledInput.js";
 export default function MalumInfo({character, updateCharacter}) {
     return (
         <>
-            <header>
-                <h1>Info</h1>
+            <header >
+                <h1 style={{margin: "10px"}}>Info</h1>
                 {/* <input type="text" value={character.info.file} onChange={(event) => {malum.update.info.file(character, updateCharacter, event);}} /> */}
             </header>
-            <main style={{margin: "1vh"}}>
-                <section id="section1" className="infoSection" style={{border: "0px"}}>
+            <main style={{display: "flex", flexDirection: "column", width: "600px"}}>
+                <section id="section1" className="infoSection" style={{border: "0px", flexGrow:"1",}}>
                     <LabeledInput id="Avatar" type="image"/>
                     <section>
                         <section className="Names">
@@ -41,7 +41,7 @@ export default function MalumInfo({character, updateCharacter}) {
                         <LabeledInput id="Height" type="text"  property=""/>
                         <LabeledInput id="Weight" type="text"  property=""/>
                     </Box>
-                    <Box id="Relations">
+                    <Box id="Relations"  style={{flexGrow:"3"}}>
                         <LabeledInput id="Membership" type="textList" property=""/>
                         <LabeledInput id="Allies" type="textList" property=""/>
                         <LabeledInput id="Enemies" type="textList" property=""/>
@@ -53,8 +53,12 @@ export default function MalumInfo({character, updateCharacter}) {
                         <LabeledInput id="Culture" type="textList" property=""/>
                     </Box>
                     <section style={{display: "flex", border: "solid black 1px"}}>
-                        <LabeledInput id="Campaign" type="text" property=""/>
-                        <LabeledInput id="System" type="text" property=""/>
+                        <div style={{flexGrow: '1'}}>
+                            <LabeledInput id="Campaign" type="text" property=""/>
+                        </div>
+                        <div style={{flexGrow: '1', borderLeft:'solid black 2px'}}>
+                            <LabeledInput id="System" type="text" property=""/>
+                        </div>
                     </section>
                 </section>
             </main>

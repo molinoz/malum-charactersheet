@@ -1,13 +1,16 @@
 import React from "react";
 import NumInput from "../atoms/NumInput.js"
+import Avatar from "./Avatar.js";
+import DropdownSelect from "./DropdownSelect.js";
+import TextList from "./TextList.js";
 import { useState } from "react";
 
-export default function LabeledInput({id,type,choices,min,max,img,property}) {
+export default function LabeledInput({id,type,choices,min,max,img,character}) {
     const [num, setNum] = useState(0);
     switch(type){
         case 'text':
             return (
-                <div>
+                <div style={{display:'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                     <label for={id}>{id}:</label>
                     <input type="text" id={id}/>
                 </div>
@@ -16,41 +19,41 @@ export default function LabeledInput({id,type,choices,min,max,img,property}) {
             return (<input type="text" placeholder={id}/>)
         case 'dropList':
             return (
-                <div>
+                <div style={{display:'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                     <label for={id}>{id}:</label>
-                    <input id={id} value="Droplist"/>
+                    <DropdownSelect choices={choices}/>
                 </div>
             );
         case 'numSpin':
             return(
-                <div style={{display:'flex', flexDirection:'row'}}>
+                <div style={{display:'flex', flexDirection:'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <label for={id}>{id}:</label>
                     <section className="spinNum outline" style={{display:'flex', flexDirection:'row'}} id={id}>
-                        <p style={{}}>{num}</p>
+                        <p>{num}</p>
                         <NumInput onChange={setNum} value={num} max={max} min={min}/>
                     </section>
                 </div>
             );
         case 'textList':
             return(
-                <div>
-                    <label for={id}>{id}:</label>
-                    <input id={id} value="textList"/>
-                </div>
+                <>
+                    <TextList id={id}/>
+                </>
             );
         case 'textarea':
             return(
                 <div>
-                    <textarea id={id} style={{width:"114vh", height:"200px"}}/>
+                    <textarea id={id} style={{width:"570px", height:"200px", resize: 'none'}}/>
                 </div>
             );
         case 'image':
-            let non = "https://unpkg.com/pixelarticons@1.8.0/svg/avatar.svg";
             return(
                 <div>
-                    <img src={img?img:non} style={{width: "110px", border: "solid black 2px", marginRight:"10px"}}/>
+                    <Avatar />
                 </div>
             );
+            
+
         default:
             return <p>ERROR</p>
     }; 
