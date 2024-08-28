@@ -16,7 +16,7 @@ export default function infoBlock(data) {
             return(
                 <Input data={data}/>
             )
-        case 'tracker': 
+        case 'tracker':
             return(
                 <Tracker data={data}/>
             )

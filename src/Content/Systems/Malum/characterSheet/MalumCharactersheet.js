@@ -8,7 +8,6 @@ import MalumAttributes from "./pages/MalumAttributes";
 import MalumTurnPlanner from "./pages/MalumTurnPlanner";
 import MalumFeatures from "./pages/MalumFeatures";
 import MalumInventory from "./pages/MalumInventory";
-import MalumSpellList from "./pages/MalumSpellList";
 
 export default function MalumCharactersheet({character, updateCharacter}) {
     if(character === null || character === undefined) return null;
@@ -20,7 +19,6 @@ export default function MalumCharactersheet({character, updateCharacter}) {
                 <Route path="/turn-planner" element={<MalumTurnPlanner character={character} updateCharacter={updateCharacter}/>} />
                 <Route path="/features" element={<MalumFeatures character={character} updateCharacter={updateCharacter}/>} />
                 <Route path="/inventory" element={<MalumInventory character={character} updateCharacter={updateCharacter}/>} />
-                <Route path="/spell-list" element={<MalumSpellList character={character} updateCharacter={updateCharacter}/>} />
             </Routes>
         </>
     )

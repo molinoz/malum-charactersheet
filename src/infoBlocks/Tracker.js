@@ -6,7 +6,18 @@ export default function Tracker(){
             return()
         case 'list':
             return()
+        case 'compList':
+            return(
+                <>
+                    
+                </>
+            )
         case 'resource':
-            return()
+            return(
+                <>
+                    <h1>Tracker:</h1>
+                    <p>ERROR</p>
+                </>
+            )
     }
 }

@@ -6,5 +6,12 @@ export default function Selection(){
             return()
         case 'catalog':
             return()
+        default:
+            return(
+                <>
+                    <h1>Selection:</h1>
+                    <p>ERROR</p>
+                </>
+            )
     }
 }

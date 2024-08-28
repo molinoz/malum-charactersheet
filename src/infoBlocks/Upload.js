@@ -6,5 +6,12 @@ export default function Upload(){
             return()
         case 'file':
             return()
+        default:
+            return(
+                <>
+                    <h1>Upload:</h1>
+                    <p>ERROR</p>
+                </>
+            )
     }
 }
