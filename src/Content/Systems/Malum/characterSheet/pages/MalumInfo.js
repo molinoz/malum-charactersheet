@@ -5,7 +5,7 @@ import LabeledInput from "../../../../../components/atoms/LabeledInput.js";
 
 export default function MalumInfo({character, updateCharacter}) {
     return (
-        <>
+        <div>
             <header >
                 <h1 style={{margin: "10px"}}>Info</h1>
                 {/* <input type="text" value={character.info.file} onChange={(event) => {malum.update.info.file(character, updateCharacter, event);}} /> */}
@@ -62,6 +62,6 @@ export default function MalumInfo({character, updateCharacter}) {
                     </section>
                 </section>
             </main>
-        </>
+        </div>
     )
 }

@@ -16,9 +16,11 @@ export default function App() {
     }, [character]);
   return (
     <>
-      <Navbar character={character}/>
-      <MalumCharactersheet character={character} updateCharacter={updateCharacter}/>
-      <FileSet character={character} updateCharacter={updateCharacter}/>
+      <div style={{display: 'flex'}}>
+        <Navbar character={character} />
+        <MalumCharactersheet character={character} updateCharacter={updateCharacter} style={{border: 'solid black 2px'}}/>
+      </div>
+      {/* <FileSet character={character} updateCharacter={updateCharacter}/> */}
     </>
   );
 }

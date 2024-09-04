@@ -6,10 +6,10 @@ export default function MalumTurnPlanner({character, updateCharacter}) {
         updateCharacter(event.target.value);
     };
     return (
-        <>
+        <div>
             <header>
                 <h1>Turn Planner</h1>
             </header>
-        </>
+        </div>
     )
 }

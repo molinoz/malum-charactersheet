@@ -12,7 +12,7 @@ export default function MalumAttributes({character, updateCharacter}) {
     console.log("Skills Learned:", learnedSkills)
     let SP = character.attri.SPI + character.attri.baseSPI - spentSP;
     return (
-        <>
+        <div>
             <header>
                 <h1>Attributes</h1>
             </header>
@@ -24,6 +24,6 @@ export default function MalumAttributes({character, updateCharacter}) {
                 <SkillBoard type="Combat" character={character} updateCharacter={updateCharacter}/>
                 <SkillBoard type="Utility" character={character} updateCharacter={updateCharacter}/>
             </div>
-        </>
+        </div>
     )
 }
